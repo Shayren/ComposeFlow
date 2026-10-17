@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "2.0",
+  "workflow": {
+    "nodes": [
+      {
+        "id": 1,
+        "type": "task",
+        "title": "Review the ComposeFlow subagent workflow",
+        "description": "Inspect the implementation and validation behavior, then combine the findings.",
+        "contract": {
+          "format": "markdown",
+          "style": ["Concise", "Structured"],
+          "acceptance": [
+            "Show both subagent workflows and their returned findings.",
+            "Preserve the parallel relationship between the two subagent calls."
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "type": "response",
+        "title": "Review summary",
+        "format": "Markdown",
+        "style": ["Concise", "Structure"]
+      }
+    ],
+    "edges": [
+      {
+        "source": {"node": 1, "port": "contract"},
+        "target": {"node": 2, "port": "contract"}
+      }
+    ]
+  },
+  "execution": {
+    "traces": {
+      "1": {
+        "taskId": 1,
+        "inputs_from": [],
+        "read_only": true,
+        "attempts": [
+          {
+            "attempt": 1,
+            "variantOf": null,
+            "plan": {
+              "header": "Plan - Review in parallel",
+              "steps": [
+                "Ask Explore to inspect the model and rendering path.",
+                "Ask General to inspect validation and trace handling.",
+                "Combine both reports into one result."
+              ]
+            },
+            "criteria": [
+              "Each subagent has a recorded workflow and result.",
+              "Parallel subagent calls share the same parallelGroup."
+            ],
+            "actions": [
+              {
+                "header": "Parallel subagent investigation",
+                "description": "Dispatch Explore and General to review separate parts of the flow.",
+                "subagents": [
+                  {
+                    "id": "explore-1",
+                    "agent": "explore",
+                    "task": "Inspect how subagent workflows are represented and rendered.",
+                    "status": "completed",
+                    "parallelGroup": "review-1",
+                    "workflow": [
+                      {
+                        "step": 1,
+                        "action": "Trace Action execution data into the canvas card.",
+                        "result": "Action summaries are displayed inside execution cards.",
+                        "subagents": []
+                      },
+                      {
+                        "step": 2,
+                        "action": "Check whether nested calls remain visible.",
+                        "result": "Nested subagent summaries are included in the Action card text.",
+                        "subagents": []
+                      }
+                    ],
+                    "result": "The canvas can show subagent workflows in the parent Action card."
+                  },
+                  {
+                    "id": "general-1",
+                    "agent": "general",
+                    "task": "Inspect how nested trace data passes ComposeFlow validation.",
+                    "status": "completed",
+                    "parallelGroup": "review-1",
+                    "workflow": [
+                      {
+                        "step": 1,
+                        "action": "Check Task trace validation rules.",
+                        "result": "Known required trace fields are checked; additional nested action data is preserved.",
+                        "subagents": []
+                      },
+                      {
+                        "step": 2,
+                        "action": "Validate a workflow containing subagent data.",
+                        "result": "The workflow is accepted by the ComposeFlow validator.",
+                        "subagents": []
+                      }
+                    ],
+                    "result": "Nested subagent workflow fields are accepted in execution traces."
+                  }
+                ]
+              },
+              {
+                "header": "Combine subagent reports",
+                "description": "Summarize the two returned results against the Task contract.",
+                "subagents": []
+              }
+            ],
+            "evaluation": {
+              "output": {},
+              "observation": {},
+              "decision": "pass",
+              "report": "Both parallel subagents returned ordered workflow steps and findings; the result meets the Task contract."
+            }
+          }
+        ],
+        "acceptedAttempt": 1,
+        "result": {
+          "summary": "ComposeFlow displays the two parallel subagent workflows and their results inside the parent Action card."
+        }
+      }
+    }
+  }
+}
