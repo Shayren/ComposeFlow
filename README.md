@@ -1,5 +1,9 @@
 # ComposeFlow 2.4.0
 
+![ComposeFlow desktop workflow editor — Theron Nguyen | Faraday Technology](assets/composeflow-demo.png)
+
+Design and validate AI workflows in a visual desktop editor, then hand them to OpenCode or Codex.
+
 ComposeFlow is a Tkinter desktop workflow editor. This folder contains the application and its OpenCode/Codex integration.
 
 ## Requirements
